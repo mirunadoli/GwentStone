@@ -24,7 +24,7 @@ public class HeartHound extends EnvironmentCard {
 
 
     /**
-     *
+     * apply card effect
      * @param game
      * @param action
      * @return
@@ -38,7 +38,7 @@ public class HeartHound extends EnvironmentCard {
         ArrayList<MinionCard> mirRow;
         MinionCard card;
 
-        // gasirea randului oglindit
+        // find mirrored row
         if (action.getAffectedRow() == Constants.R0) {
             mirRow = game.getGameTable().getRows().get(Constants.R3);
         } else if (action.getAffectedRow() == Constants.R1) {
@@ -48,7 +48,8 @@ public class HeartHound extends EnvironmentCard {
         } else {
             mirRow = game.getGameTable().getRows().get(Constants.R0);
         }
-        // verifica conditia speciala pt HeartHound
+
+        // verify if mirrored row is full
         if (mirRow.size() >= Constants.MAX_CARDS) {
             game.getOutput().addObject().put("command", "useEnvironmentCard")
                     .put("handIdx", action.getHandIdx())
@@ -57,12 +58,12 @@ public class HeartHound extends EnvironmentCard {
             return -1;
         }
 
-        //verifica daca exista carti pe randul selectat
+        // verify if row is empty
         if (row.isEmpty()) {
             return -1;
         }
 
-        // cautarea cartii cu viata cea mai mare
+        // search for the card with most health
         card = row.get(0);
         for (int i = 0; i < row.size(); i++) {
             if (row.get(i).getHealth() >= card.getHealth()) {
@@ -70,7 +71,7 @@ public class HeartHound extends EnvironmentCard {
             }
         }
 
-        // adaugarea cartii pe randul oglindit
+        // adds it to the mirrored row
         mirRow.add(card);
         row.remove(card);
         return 0;

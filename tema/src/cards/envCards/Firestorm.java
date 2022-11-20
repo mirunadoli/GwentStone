@@ -22,7 +22,7 @@ public class Firestorm extends EnvironmentCard {
     }
 
     /**
-     *
+     * apply card effect
      * @param game
      * @param action
      * @return

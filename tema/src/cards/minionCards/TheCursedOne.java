@@ -19,13 +19,12 @@ public class TheCursedOne extends MinionCard {
 
 
     /**
-     *
+     * swap between health and attack damage
      * @param game
      * @param action
      * @return
      */
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // face swap intre viata si atacul vietii selectate
         MinionCard card = game.getGameTable().getRows().get(action.getCardAttacked().getX())
                 .get(action.getCardAttacked().getY());
 
@@ -33,7 +32,7 @@ public class TheCursedOne extends MinionCard {
         card.setHealth(card.getAttackDamage());
         card.setAttackDamage(health);
 
-        //daca noua viata e zero, cartea e distrusa
+        // if new health is zero, destroy the card
         if (card.getHealth() <= 0) {
             game.getGameTable().getRows().get(action.getCardAttacked().getX()).remove(card);
         }

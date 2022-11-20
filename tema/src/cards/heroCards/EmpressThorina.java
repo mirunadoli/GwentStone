@@ -20,22 +20,21 @@ public class EmpressThorina extends HeroCard {
     }
 
     /**
-     *
+     * destroys card with most health from the selected row
      * @param game
      * @param action
      * @return
      */
     @Override
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // distruge cartea cu cea mai mare viata de pe rand
         ArrayList<MinionCard> row = game.getGameTable().getRows().get(action.getAffectedRow());
 
-        // daca nu exista carti pe randul ales
+        // if ther are no cards
         if (row.size() == 0) {
             return 0;
         }
 
-        // gasirea cartii cu viata cea mai mare
+        // find the card with most life
         MinionCard targetCard = row.get(0);
         int x = action.getAffectedRow();
         int y = 0;
@@ -47,7 +46,7 @@ public class EmpressThorina extends HeroCard {
             }
         }
 
-        // distrugerea cartii
+        // destroy the card
         game.getGameTable().getRows().get(x).remove(y);
         return 0;
     }

@@ -21,15 +21,13 @@ public class GeneralKocioraw extends HeroCard {
     }
 
     /**
-     *
+     * +1 attack damage for all card on row
      * @param game
      * @param action
      * @return
      */
     @Override
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-
-        // +1 atac pt toate cartile de pe rand
 
         ArrayList<MinionCard> row = game.getGameTable().getRows().get(action.getAffectedRow());
 

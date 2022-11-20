@@ -62,7 +62,7 @@ import java.util.ArrayList;
     }
 
      /**
-      *
+      * verifiy if card is environment
       * @return
       */
      public final int verifyEnvCard() {
@@ -75,7 +75,7 @@ import java.util.ArrayList;
     }
 
      /**
-      *
+      * verifiy if card should be placed on the back row
       * @return
       */
      public final int verifyBackRow() {

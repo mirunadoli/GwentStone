@@ -20,14 +20,13 @@ public class KingMudface extends HeroCard {
     }
 
     /**
-     *
+     * +1 health for all cards on row
      * @param game
      * @param action
      * @return
      */
     @Override
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // +1 viata pt toate cartile de pe rand
 
         ArrayList<MinionCard> row = game.getGameTable().getRows().get(action.getAffectedRow());
 

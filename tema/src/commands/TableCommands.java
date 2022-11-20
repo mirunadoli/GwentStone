@@ -14,22 +14,23 @@ public class TableCommands {
 
 
     /**
-     *
+     * places a card on the table
      * @param game
      * @param action
      */
     public void placeCard(final GameInfo game, final ActionsInput action) {
-        // gaseste cartea
+        // find the card
         Card card;
         Player player = game.getActivePlayer();
 
+        // if the card doesn't exist - return
         if (action.getHandIdx() >= player.getHandCards().size()) {
             return;
         }
 
         card = player.getHandCards().get(action.getHandIdx());
 
-        // verifica daca e env
+        // verify if it is environment
         if (card.verifyEnvCard() == 1) {
             game.getOutput().addObject().put("command", "placeCard")
                     .put("handIdx", action.getHandIdx())
@@ -37,7 +38,7 @@ public class TableCommands {
             return;
         }
 
-        //verifica daca e destula mana
+        // verify if player has enough mana
         if (card.getMana() > player.getMana()) {
             game.getOutput().addObject().put("command", "placeCard")
                     .put("handIdx", action.getHandIdx())
@@ -45,9 +46,8 @@ public class TableCommands {
             return;
         }
 
-        // verifica pe ce rand ar tb plasata
+        // verify on which row it should be placed
         ArrayList<MinionCard> row;
-        ArrayList<Boolean> frozen;
         if (card.verifyBackRow() == 1 && game.getActivePlayer() == game.getPlayer1()) {
             row = game.getGameTable().getRows().get(Constants.R3);
         } else if (card.verifyBackRow() == 1 && game.getActivePlayer() == game.getPlayer2()) {
@@ -58,7 +58,7 @@ public class TableCommands {
             row = game.getGameTable().getRows().get(Constants.R1);
         }
 
-        //verifica daca are loc
+        // verify if there is space on the row
         if (row.size() >= Constants.MAX_CARDS) {
             game.getOutput().addObject().put("command", "placeCard")
                     .put("handIdx", action.getHandIdx())
@@ -66,7 +66,7 @@ public class TableCommands {
             return;
         }
 
-        // adauga cartea pe masa
+        // adds the card on table
         if (card.getName().equals("The Ripper")) {
             row.add(new TheRipper((MinionCard) card));
         } else if (card.getName().equals("Miraj")) {
@@ -85,22 +85,22 @@ public class TableCommands {
             row.add(new Sentinel((MinionCard) card));
         }
 
-        // sterge cartea din mana
+        // deletes the card from hand and decreases mana
         player.getHandCards().remove(action.getHandIdx());
-
         player.setMana(player.getMana() - card.getMana());
     }
 
 
     /**
-     *
+     * uses the ability of a environment card
      * @param game
      * @param action
      */
     public void useEnvironmentCard(final GameInfo game, final ActionsInput action) {
         Player player = game.getActivePlayer();
-
         Card card = player.getHandCards().get(action.getHandIdx());
+
+        // verify if card is environment
         if  (card.verifyEnvCard() == 0) {
             game.getOutput().addObject().put("command", "useEnvironmentCard")
                     .put("handIdx", action.getHandIdx())
@@ -109,12 +109,9 @@ public class TableCommands {
             return;
         }
 
-        // TO DO - mota aici cardEffect din envCards - partea de verificare a conditiilor
-        // ca sa semene cu celelalte functii de aici
-
         int ret = player.getHandCards().get(action.getHandIdx()).cardEffect(game, action);
 
-        // daca actiunea a fost facuta, cartea e starsa din mana + se scade mana
+        // if the effect was applied, removes the card from hand
         if (ret == 0) {
             player.setMana(player.getMana() - card.getMana());
             player.getHandCards().remove(card);
@@ -124,7 +121,7 @@ public class TableCommands {
 
 
     /**
-     *
+     * verify if there exists a tank card on the row
      * @param row
      * @return
      */
@@ -139,23 +136,23 @@ public class TableCommands {
 
 
     /**
-     *
+     * implements the attack of a card
      * @param game
      * @param action
      */
     public void cardUsesAttack(final GameInfo game, final ActionsInput action) {
 
-        // se verifica daca exista carte la pozitia atacata
         int ofX = action.getCardAttacker().getX();
         int ofY = action.getCardAttacker().getY();
         int defX = action.getCardAttacked().getX();
         int defY = action.getCardAttacked().getY();
 
+        // verify if the card attacked exists
         if (defY >= game.getGameTable().getRows().get(defX).size()) {
             return;
         }
 
-        // se verifica daca cartea atacata e cartea inamicului
+        // verify if the card attacked belongs to the enemy
         if (game.getActivePlayer() == game.getPlayer1()) {
             if (defX == Constants.R2 || defX == Constants.R3) {
                 game.getOutput().addObject().put("command", "cardUsesAttack")
@@ -174,7 +171,7 @@ public class TableCommands {
             }
         }
 
-        // se verifica daca cartea a atacat runda asta
+        // verify if the attacker card has attacked this round already
         if (game.getGameTable().getHasAttacked()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "cardUsesAttack")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -183,7 +180,7 @@ public class TableCommands {
             return;
         }
 
-        // se verifica daca cartea atacatorului e inghetata
+        // verify if the attacker card is frozen
         if (game.getGameTable().getFrozen()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "cardUsesAttack")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -195,7 +192,7 @@ public class TableCommands {
         MinionCard attackedCard = game.getGameTable().getRows().get(defX).get(defY);
         MinionCard attackerCard = game.getGameTable().getRows().get(ofX).get(ofY);
 
-        // verifica daca inamicul are carti tank si daca da, verifica daca cartea atacata e tank
+        // verify if the enemy has tank cards and if the attacked card is tank
         if (game.getActivePlayer() == game.getPlayer1()) {
             if (existsTank(game.getGameTable().getRows().get(1)) == 1) {
                 if (!(attackedCard.getName().equals("Warden")
@@ -220,19 +217,19 @@ public class TableCommands {
             }
         }
 
-        // executa atacul
+        // executes the attack
         attackedCard.setHealth(attackedCard.getHealth() - attackerCard.getAttackDamage());
         if (attackedCard.getHealth() <= 0) {
             game.getGameTable().getRows().get(defX).remove(attackedCard);
         }
 
-        // seteaza cartea ca folosita pt runda curenta
+        // sets attacker card as used this round
         game.getGameTable().getHasAttacked()[ofX][ofY] = 1;
     }
 
 
     /**
-     *
+     * uses the special ability of a card
      * @param game
      * @param action
      */
@@ -243,15 +240,12 @@ public class TableCommands {
         int defX = action.getCardAttacked().getX();
         int defY = action.getCardAttacked().getY();
 
-
-        // se verifica daca exista carte la pozitia atacata
+        // verify if the card attacked exists
         if (defY >= game.getGameTable().getRows().get(defX).size()) {
             return;
         }
 
-
-
-        // se verifica daca cartea atacatorului e inghetata
+        // verify if the attacker card is frozen
         if (game.getGameTable().getFrozen()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "cardUsesAbility")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -260,8 +254,7 @@ public class TableCommands {
             return;
         }
 
-
-        // se verifica daca cartea a atacat runda asta
+        // verify if the attacker card has attacked this round already
         if (game.getGameTable().getHasAttacked()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "cardUsesAbility")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -270,12 +263,9 @@ public class TableCommands {
             return;
         }
 
-
-
-        // se verifica daca cartea e Disciple + daca cartea atacata e a jucatorului curent
+        // verify if attacker card is Disciple and if attacked card belongs to current player
         MinionCard ofCard = game.getGameTable().getRows().get(ofX).get(ofY);
         MinionCard defCard = game.getGameTable().getRows().get(defX).get(defY);
-
 
         if (ofCard.getName().equals("Disciple")) {
             if (game.getActivePlayer() == game.getPlayer1() && (defX == 0 || defX == 1)) {
@@ -293,12 +283,12 @@ public class TableCommands {
                 return;
             }
 
-            // se verifica daca cartea e The Ripper, Miraj sau The Cursed One
+            // verify if attacker card is The Ripper, Miraj or The Cursed One
         } else if (ofCard.getName().equals("The Ripper") || ofCard.getName().equals("Miraj")
                 || ofCard.getName().equals("The Cursed One")) {
 
 
-            // daca cartea atacata e a jucatorului curent => eroare
+            // verify if attacked card belongs to the enemy
             if (game.getActivePlayer() == game.getPlayer1()
                     && (defX == Constants.R2 || defX == Constants.R3)) {
                 game.getOutput().addObject().put("command", "cardUsesAbility")
@@ -314,8 +304,7 @@ public class TableCommands {
                 return;
             }
 
-
-            // se verifica existenta un carti Tank
+            // verify if a tank card is on the table
             if (game.getActivePlayer() == game.getPlayer1()
                     && existsTank(game.getGameTable().getRows().get(1)) == 1) {
                 if (!(defCard.getName().equals("Warden") || defCard.getName().equals("Goliath"))) {
@@ -337,22 +326,19 @@ public class TableCommands {
                     }
             }
 
-            // daca e orice alt tip de minion, nu are abilitate speciala, deci return
+            // if the card is any other type of minion, it doesn't have a special ability
         } else {
             return;
         }
 
-        // se foloseste abilitatea
+        // uses the ability
         ofCard.cardEffect(game, action);
-
-
-        // seteaza cartea ca folosita pt runda curenta
         game.getGameTable().getHasAttacked()[ofX][ofY] = 1;
     }
 
 
     /**
-     *
+     * uses an attack on the hero
      * @param game
      * @param action
      */
@@ -361,15 +347,14 @@ public class TableCommands {
         int ofX = action.getCardAttacker().getX();
         int ofY = action.getCardAttacker().getY();
 
-        // se verifica daca exista carte la care sa atace
+        // verify if the attacker card exists
         if (ofY >= game.getGameTable().getRows().get(ofX).size()) {
             return;
         }
 
         MinionCard ofCard = game.getGameTable().getRows().get(ofX).get(ofY);
 
-
-        // se verifica daca cartea atacatorului e inghetata
+        // verify if the attacker card is frozen
         if (game.getGameTable().getFrozen()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "useAttackHero")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -377,7 +362,7 @@ public class TableCommands {
             return;
         }
 
-        // se verifica daca cartea a atacat runda asta
+        // verify if the attacker card has attacked this round already
         if (game.getGameTable().getHasAttacked()[ofX][ofY] == 1) {
             game.getOutput().addObject().put("command", "useAttackHero")
                     .putPOJO("cardAttacker", action.getCardAttacker())
@@ -386,7 +371,7 @@ public class TableCommands {
         }
 
 
-        // se verifica daca exista carti Tank
+        // verify if a tank card is on the table
         if (game.getActivePlayer() == game.getPlayer1()
                 && existsTank(game.getGameTable().getRows().get(1)) == 1) {
                 game.getOutput().addObject().put("command", "useAttackHero")
@@ -403,7 +388,7 @@ public class TableCommands {
 
         HeroCard defHero;
 
-        // atacul propriu-zis
+        // executes the attac
         if (game.getActivePlayer() == game.getPlayer1()) {
             defHero = game.getPlayer2().getHero();
         } else {
@@ -413,6 +398,7 @@ public class TableCommands {
         defHero.setHealth(defHero.getHealth() - ofCard.getAttackDamage());
         game.getGameTable().getHasAttacked()[ofX][ofY] = 1;
 
+        // if the hero health is under 0, end game
         if (defHero.getHealth() <= 0) {
             game.setGameEnd(1);
             game.getStats().setgPlayed(game.getStats().getgPlayed() + 1);
@@ -429,7 +415,7 @@ public class TableCommands {
 
 
     /**
-     *
+     * uses a hero's ability
      * @param game
      * @param action
      */
@@ -444,8 +430,7 @@ public class TableCommands {
             hero = game.getPlayer2().getHero();
         }
 
-
-        //verifica daca e destula mana
+        // verify if the player has enough mana
         if (hero.getMana() > player.getMana()) {
             game.getOutput().addObject().put("command", "useHeroAbility")
                     .put("affectedRow", action.getAffectedRow())
@@ -453,7 +438,7 @@ public class TableCommands {
             return;
         }
 
-        // se verifica daca eroul a atacat runda asta
+        // verify if the hero has already attacked this round
         if (player.getHeroAttacked() == 1) {
             game.getOutput().addObject().put("command", "useHeroAbility")
                     .put("affectedRow", action.getAffectedRow())
@@ -461,9 +446,7 @@ public class TableCommands {
             return;
         }
 
-
-
-        // verifica daca randul apartine jucatorului care tb
+        // verify if attacked row belongs to the right player
         if (hero.getName().equals("Lord Royce") || hero.getName().equals("Empress Thorina")) {
             if (game.getActivePlayer() == game.getPlayer1()
                     && (action.getAffectedRow() == Constants.R2
@@ -497,8 +480,7 @@ public class TableCommands {
             }
         }
 
-
-        // executa actiunea
+        // executes the attack
         hero.cardEffect(game, action);
         player.setMana(player.getMana() - hero.getMana());
         player.setHeroAttacked(1);

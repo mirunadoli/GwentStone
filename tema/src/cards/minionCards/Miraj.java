@@ -18,13 +18,12 @@ public class Miraj extends MinionCard {
     }
 
     /**
-     *
+     * swap between healths
      * @param game
      * @param action
      * @return
      */
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        //face swap intre viata lui si viata celeilalte carti
         MinionCard defCard = game.getGameTable().getRows().get(action.getCardAttacked().getX())
                 .get(action.getCardAttacked().getY());
         MinionCard ofCard = game.getGameTable().getRows().get(action.getCardAttacker().getX())

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Debugger {
     /**
-     *
+     * these are all methods for the debugger commands
      * @param game
      */
     public void getPlayerTurn(final GameInfo game) {
@@ -105,7 +105,7 @@ public class Debugger {
      * @param game
      */
     public void getCardsOnTable(final GameInfo game) {
-        // copie a mesei curente
+        // copy the current game table
         GameTable tableCopy = new GameTable(game.getGameTable());
 
         game.getOutput().addObject().put("command", "getCardsOnTable")
@@ -118,10 +118,11 @@ public class Debugger {
      * @param action
      */
     public void getCardAtPosition(final GameInfo game, final ActionsInput action) {
-        // se verifica daca exista carte la pozitia data
+
         int x = action.getX();
         int y = action.getY();
 
+        // verify if there is a card at the given position
         if (x > Constants.R3 || y >= game.getGameTable().getRows().get(x).size()) {
             game.getOutput().addObject().put("command", "getCardAtPosition")
                     .put("output", "No card at that position.");

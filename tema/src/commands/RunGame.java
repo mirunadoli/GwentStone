@@ -13,12 +13,11 @@ public class RunGame {
     private final TableCommands table = new TableCommands();
 
     /**
-     *
+     * calls the right methods based on the command received
      * @param game
      * @param action
      */
     void executeCommand(final GameInfo game, final ActionsInput action) {
-        // to do - if mare care trimite actiunile acolo unde tb executate
         if (action.getCommand().equals("getPlayerDeck")) {
             debug.getPlayerDeck(game, action);
         } else if (action.getCommand().equals("getPlayerHero")) {
@@ -59,18 +58,18 @@ public class RunGame {
 }
 
     /**
-     *
+     * executes a round
      * @param game
      */
     void executeRound(final GameInfo game) {
 
-
+        // if starting player is first player, executes first player's turn
+        // and then second player's turn
         if (game.getGameInput().getStartGame().getStartingPlayer() == 1) {
-
             game.setActivePlayer(game.getPlayer1());
             playerTurn(game);
 
-            // se verifica daca jocul s-a terminat
+            // verify if the game has ended
             if (game.getGameEnd() == 1) {
                 return;
             }
@@ -81,7 +80,7 @@ public class RunGame {
                 return;
             }
         } else {
-
+            // if starting player is second player
             game.setActivePlayer(game.getPlayer2());
             playerTurn(game);
             if (game.getGameEnd() == 1) {
@@ -97,34 +96,33 @@ public class RunGame {
     }
 
     /**
-     *
+     * prepares the beginning of a round
+     * gives each player mana and a card from the deck
      * @param game
      */
     void startRound(final GameInfo game) {
         Player player1 = game.getPlayer1();
         Player player2 = game.getPlayer2();
 
-
-        // adauga mana
+        // adds mana
         player1.setMana(player1.getMana() + game.getRoundCount());
 
-        // adauga carte in mana
+        // add card in hand
         if (!player1.getDeck().isEmpty()) {
             player1.getHandCards().add(player1.getDeck().get(0));
 
-            // daca e de tip environment o adauga in handEnv
+            // verify f it is environment
             if (player1.getDeck().get(0).verifyEnvCard() == 1) {
                 player1.getHandEnv().add(player1.getDeck().get(0));
             }
             player1.getDeck().remove(0);
         }
 
-        // pt jucatorul 2
+        // same for second player
         player2.setMana(player2.getMana() + game.getRoundCount());
         if (!player2.getDeck().isEmpty()) {
             player2.getHandCards().add(player2.getDeck().get(0));
 
-            // daca e de tip environment o adauga in handEnv
             if (player2.getDeck().get(0).verifyEnvCard() == 1) {
                 player2.getHandEnv().add(player2.getDeck().get(0));
             }
@@ -135,7 +133,7 @@ public class RunGame {
     }
 
     /**
-     *
+     * executes the commands received during the player's turn
      * @param game
      */
     void playerTurn(final GameInfo game) {
@@ -143,15 +141,16 @@ public class RunGame {
         ArrayList<ActionsInput> actions = game.getGameInput().getActions();
 
         while (game.getCurrentAction() < actions.size()) {
+
+            // if the player's turn is over
             if (actions.get(game.getCurrentAction()).getCommand().equals("endPlayerTurn")) {
 
-                // se verifica daca jocul s-a terminat
+                // verify if game ended
                 if (game.getGameEnd() == 1) {
                     return;
                 }
 
-
-                // dezgheata cartile playerului curent + rezolva hasAttacked
+                // unfreezes cards and sets them as unused
                 if (game.getActivePlayer() == game.getPlayer1()) {
                     game.getPlayer1().setHeroAttacked(0);
                     for (int i = 0; i < Constants.MAX_CARDS; i++) {
@@ -169,10 +168,10 @@ public class RunGame {
                         game.getGameTable().setHasAttackedElem(Constants.R1, i, 0);
                     }
                 }
-
                 game.setCurrentAction(game.getCurrentAction() + 1);
                 return;
             }
+            // executes the command
             executeCommand(game, actions.get(game.getCurrentAction()));
             game.setCurrentAction(game.getCurrentAction() + 1);
         }
@@ -180,17 +179,16 @@ public class RunGame {
 
 
     /**
-     *
+     * prepares and starts the game
      * @param game
      */
     public void playGame(final GameInfo game) {
         game.setGameEnd(0);
-        //roundCount = 1;
         game.setCurrentAction(0);
 
         while (game.getCurrentAction() < game.getGameInput().getActions().size()) {
             startRound(game);
-            // se verifica daca jocul s-a terminat
+            // verify if game ended
             if (game.getGameEnd() == 1) {
                 return;
             }

@@ -1,7 +1,7 @@
 package components;
 
 public final class Constants {
-    // constante pt randuri
+    // constants for the table rows for checkstyle
     public static final int R0 = 0;
     public static final int R1 = 1;
     public static final int R2 = 2;

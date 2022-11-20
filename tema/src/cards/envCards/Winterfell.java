@@ -22,7 +22,7 @@ public class Winterfell extends EnvironmentCard {
     }
 
     /**
-     *
+     * apply card effect
      * @param game
      * @param action
      * @return

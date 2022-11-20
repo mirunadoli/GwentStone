@@ -21,15 +21,18 @@ import java.util.Random;
 
 public class StartGameEngine {
     /**
-     *
+     * Creates a copy of the deck that will be used in the current game
+     * and gives each card the corresponding class
      * @param deck
      * @return
      */
     ArrayList<Card> copyDeck(final ArrayList<CardInput> deck) {
+
+        // creates a new deck
         ArrayList<Card> copy = new ArrayList<>();
 
+        // for each card in deck, verifies the type of card
         for (int i = 0; i < deck.size(); i++) {
-            // verifica ce fel de carte este
                 if (deck.get(i).getName().equals("Firestorm")) {
                     copy.add(new Firestorm(deck.get(i)));
                 } else if (deck.get(i).getName().equals("Winterfell")) {
@@ -60,7 +63,7 @@ public class StartGameEngine {
     }
 
     /**
-     *
+     * shuffles the deck gave as an input
      * @param deck
      * @param seed
      * @return
@@ -72,24 +75,7 @@ public class StartGameEngine {
     }
 
     /**
-     *
-     * @param player
-     * @param shuffledDeck
-     * @param hero
-     */
-    void createPlayer(final Player player, final ArrayList<Card> shuffledDeck,
-                      final HeroCard hero) {
-        player.setDeck(shuffledDeck);
-        player.setHero(hero);
-        player.setMana(0);
-        player.setHeroAttacked(0);
-        player.setHandCards(new ArrayList<>());
-        player.setHandEnv(new ArrayList<>());
-
-    }
-
-    /**
-     *
+     *  creates a new hero based on the card type
      * @param hero
      * @return
      */
@@ -108,7 +94,24 @@ public class StartGameEngine {
     }
 
     /**
-     *
+     * prepares the player's info for a new game start
+     * @param player
+     * @param shuffledDeck
+     * @param hero
+     */
+    void createPlayer(final Player player, final ArrayList<Card> shuffledDeck,
+                      final HeroCard hero) {
+        player.setDeck(shuffledDeck);
+        player.setHero(hero);
+        player.setMana(0);
+        player.setHeroAttacked(0);
+        player.setHandCards(new ArrayList<>());
+        player.setHandEnv(new ArrayList<>());
+
+    }
+
+    /**
+     * creates the decks and the players for the new game
      * @param player1
      * @param decks1
      * @param player2
@@ -120,49 +123,45 @@ public class StartGameEngine {
                       final StartGameInput input) {
 
 
-        // indexul deck-ului jucat de primul player
         int idxDeck1 = input.getPlayerOneDeckIdx();
 
-        // shuffle la deck
+        // create and shuffle first player's deck
         ArrayList<Card> shuffledDeck1 = shuffle(decks1.get(idxDeck1), input.getShuffleSeed());
 
-        // eroul jucat de primul player
+        // first player's hero
         HeroCard heroPlayer1 = createNewHero(input.getPlayerOneHero());
 
-        // creeaza player 1
+        // first player
         createPlayer(player1, shuffledDeck1, heroPlayer1);
 
-
-        // analog player 2
+        // same for second player
         int idxDeck2 = input.getPlayerTwoDeckIdx();
         ArrayList<Card> shuffledDeck2 = shuffle(decks2.get(idxDeck2), input.getShuffleSeed());
         HeroCard heroPlayer2 = createNewHero(input.getPlayerTwoHero());
         createPlayer(player2, shuffledDeck2, heroPlayer2);
 
-
     }
 
 
     /**
-     *
+     * starts the program and runs each game
      * @param inputData
      * @param output
      */
     public void startProgram(final Input inputData, final ArrayNode output) {
 
-        // prescurtari
         ArrayList<ArrayList<CardInput>> decks1 = inputData.getPlayerOneDecks().getDecks();
         ArrayList<ArrayList<CardInput>> decks2 = inputData.getPlayerTwoDecks().getDecks();
         StartGameInput stInput;
 
-        //instante necesare pt joc
+        //necessary instants for the game
         RunGame runGame = new RunGame();
         GameTable gameTable;
         Statistics stats = new Statistics();
         Player player1;
         Player player2;
 
-        // pornirea jocurilor pe rand
+        // start each game
         for (int i = 0; i < inputData.getGames().size(); i++) {
             stInput = inputData.getGames().get(i).getStartGame();
             player1 = new Player();

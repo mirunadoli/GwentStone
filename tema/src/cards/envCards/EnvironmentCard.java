@@ -19,18 +19,17 @@ public class EnvironmentCard extends Card {
     }
 
     /**
-     *
+     * verify invalid cases
      * @param game
      * @param action
      * @return
      */
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // verifica cazurile invalide
         Player player = game.getActivePlayer();
 
         Card card = player.getHandCards().get(action.getHandIdx());
 
-        // daca cartea e de tip env
+        // verify if card is environment
         if  (card.verifyEnvCard() == 0) {
             game.getOutput().addObject().put("command", "useEnvironmentCard")
                     .put("handIdx", action.getHandIdx())
@@ -39,6 +38,7 @@ public class EnvironmentCard extends Card {
             return -1;
         }
 
+        // verify if player has enough mana
         if (player.getMana() < card.getMana()) {
             game.getOutput().addObject().put("command", "useEnvironmentCard")
                     .put("handIdx", action.getHandIdx())
@@ -47,6 +47,7 @@ public class EnvironmentCard extends Card {
             return -1;
         }
 
+        // verify if attacked row belongs to the enemy
         if (player == game.getPlayer1()) {
             if (action.getAffectedRow() == Constants.R2
                     || action.getAffectedRow() == Constants.R3) {

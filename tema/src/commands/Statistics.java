@@ -63,7 +63,7 @@ public class Statistics {
     }
 
     /**
-     *
+     * get first player's wins
      * @param game
      */
     public final void getPlayerOneWins(final GameInfo game) {
@@ -72,7 +72,7 @@ public class Statistics {
     }
 
     /**
-     *
+     * get second player's wins
      * @param game
      */
     public final void getPlayerTwoWins(final GameInfo game) {
@@ -81,7 +81,7 @@ public class Statistics {
     }
 
     /**
-     *
+     * get all the games played
      * @param game
      */
     public final void getTotalGamesPlayed(final GameInfo game) {

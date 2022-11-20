@@ -19,13 +19,12 @@ public class Disciple extends MinionCard {
     }
 
     /**
-     *
+     * +2 health for a minion
      * @param game
      * @param action
      * @return
      */
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // +2 la viata unui minion din tabara lui
         MinionCard card = game.getGameTable().getRows().get(action.getCardAttacked().getX())
                 .get(action.getCardAttacked().getY());
 

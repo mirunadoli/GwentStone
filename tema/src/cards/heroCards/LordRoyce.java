@@ -21,7 +21,7 @@ public class LordRoyce extends HeroCard {
     }
 
     /**
-     *
+     * freezes card with most attack damage
      * @param game
      * @param action
      * @return
@@ -29,15 +29,14 @@ public class LordRoyce extends HeroCard {
     @Override
     public int cardEffect(final GameInfo game, final ActionsInput action) {
 
-        // ingheata cartea cu cel mai mare atac de pe rand
         ArrayList<MinionCard> row = game.getGameTable().getRows().get(action.getAffectedRow());
 
-        // daca nu exista carti pe randul ales
+        // if there are no cards
         if (row.size() == 0) {
             return 0;
         }
 
-        // gasirea cartii cu atacul cel mai mare
+        // find card with most attack damage
         MinionCard targetCard = row.get(0);
         int x = action.getAffectedRow();
         int y = 0;
@@ -49,7 +48,7 @@ public class LordRoyce extends HeroCard {
             }
         }
 
-        // setarea cartii ca frozen
+        // sets card as frozen
         game.getGameTable().getFrozen()[x][y] = 1;
         return 0;
     }

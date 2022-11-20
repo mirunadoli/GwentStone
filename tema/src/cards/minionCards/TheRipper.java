@@ -18,13 +18,12 @@ public class TheRipper extends MinionCard {
     }
 
     /**
-     *
+     * -2 attack to a card
      * @param game
      * @param action
      * @return
      */
     public int cardEffect(final GameInfo game, final ActionsInput action) {
-        // scade atacul cartii selectate cu 2
         MinionCard card = game.getGameTable().getRows().get(action.getCardAttacked().getX())
                 .get(action.getCardAttacked().getY());
 
