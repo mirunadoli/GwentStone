@@ -1,7 +1,8 @@
-package main;
+package components;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import fileio.GameInput;
+import commands.Statistics;
 
 public class GameInfo {
     private Player player1;

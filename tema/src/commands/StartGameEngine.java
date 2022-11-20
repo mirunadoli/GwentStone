@@ -1,4 +1,4 @@
-package main;
+package commands;
 
 import cards.Card;
 import cards.heroCards.*;
@@ -6,11 +6,18 @@ import cards.minionCards.*;
 import cards.envCards.Firestorm;
 import cards.envCards.HeartHound;
 import cards.envCards.Winterfell;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import components.GameInfo;
+import components.GameTable;
 import fileio.CardInput;
+import fileio.Input;
 import fileio.StartGameInput;
+import components.Player;
 
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Collections;
+import java.util.Random;
+
 
 public class StartGameEngine {
     /**
@@ -29,7 +36,6 @@ public class StartGameEngine {
                     copy.add(new Winterfell(deck.get(i)));
                 } else if (deck.get(i).getName().equals("Heart Hound")) {
                     copy.add(new HeartHound(deck.get(i)));
-
                 } else if (deck.get(i).getName().equals("The Ripper")) {
                     copy.add(new TheRipper(deck.get(i)));
                 } else if (deck.get(i).getName().equals("Warden")) {
@@ -123,20 +129,49 @@ public class StartGameEngine {
         // eroul jucat de primul player
         HeroCard heroPlayer1 = createNewHero(input.getPlayerOneHero());
 
-
         // creeaza player 1
         createPlayer(player1, shuffledDeck1, heroPlayer1);
-
 
 
         // analog player 2
         int idxDeck2 = input.getPlayerTwoDeckIdx();
         ArrayList<Card> shuffledDeck2 = shuffle(decks2.get(idxDeck2), input.getShuffleSeed());
-
         HeroCard heroPlayer2 = createNewHero(input.getPlayerTwoHero());
-
         createPlayer(player2, shuffledDeck2, heroPlayer2);
 
 
+    }
+
+
+    /**
+     *
+     * @param inputData
+     * @param output
+     */
+    public void startProgram(final Input inputData, final ArrayNode output) {
+
+        // prescurtari
+        ArrayList<ArrayList<CardInput>> decks1 = inputData.getPlayerOneDecks().getDecks();
+        ArrayList<ArrayList<CardInput>> decks2 = inputData.getPlayerTwoDecks().getDecks();
+        StartGameInput stInput;
+
+        //instante necesare pt joc
+        RunGame runGame = new RunGame();
+        GameTable gameTable;
+        Statistics stats = new Statistics();
+        Player player1;
+        Player player2;
+
+        // pornirea jocurilor pe rand
+        for (int i = 0; i < inputData.getGames().size(); i++) {
+            stInput = inputData.getGames().get(i).getStartGame();
+            player1 = new Player();
+            player2 = new Player();
+            gameTable = new GameTable();
+            startNewGame(player1, decks1, player2, decks2, stInput);
+            GameInfo info = new GameInfo(player1, player2, gameTable, inputData.getGames().get(i),
+                    output, stats);
+            runGame.playGame(info);
+        }
     }
 }

@@ -2,9 +2,10 @@ package cards.envCards;
 
 import cards.Card;
 import cards.minionCards.MinionCard;
+import components.Constants;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 import java.util.ArrayList;
 
@@ -38,17 +39,17 @@ public class HeartHound extends EnvironmentCard {
         MinionCard card;
 
         // gasirea randului oglindit
-        if (action.getAffectedRow() == 0) {
-            mirRow = game.getGameTable().getRows().get(3);
-        } else if (action.getAffectedRow() == 1) {
-            mirRow = game.getGameTable().getRows().get(2);
-        } else if (action.getAffectedRow() == 2) {
-            mirRow = game.getGameTable().getRows().get(1);
+        if (action.getAffectedRow() == Constants.R0) {
+            mirRow = game.getGameTable().getRows().get(Constants.R3);
+        } else if (action.getAffectedRow() == Constants.R1) {
+            mirRow = game.getGameTable().getRows().get(Constants.R2);
+        } else if (action.getAffectedRow() == Constants.R2) {
+            mirRow = game.getGameTable().getRows().get(Constants.R1);
         } else {
-            mirRow = game.getGameTable().getRows().get(0);
+            mirRow = game.getGameTable().getRows().get(Constants.R0);
         }
         // verifica conditia speciala pt HeartHound
-        if (mirRow.size() >= 5) {
+        if (mirRow.size() >= Constants.MAX_CARDS) {
             game.getOutput().addObject().put("command", "useEnvironmentCard")
                     .put("handIdx", action.getHandIdx())
                     .put("affectedRow", action.getAffectedRow())

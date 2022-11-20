@@ -2,7 +2,7 @@ package cards.minionCards;
 
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 public class TheCursedOne extends MinionCard {
 

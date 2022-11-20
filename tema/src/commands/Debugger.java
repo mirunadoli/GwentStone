@@ -1,11 +1,12 @@
-package main.commands;
+package commands;
 
 import cards.Card;
 import cards.heroCards.HeroCard;
 import cards.minionCards.MinionCard;
+import components.Constants;
 import fileio.ActionsInput;
-import main.GameInfo;
-import main.GameTable;
+import components.GameInfo;
+import components.GameTable;
 
 import java.util.ArrayList;
 
@@ -121,7 +122,7 @@ public class Debugger {
         int x = action.getX();
         int y = action.getY();
 
-        if (x > 3 || y >= game.getGameTable().getRows().get(x).size()) {
+        if (x > Constants.R3 || y >= game.getGameTable().getRows().get(x).size()) {
             game.getOutput().addObject().put("command", "getCardAtPosition")
                     .put("output", "No card at that position.");
             return;
@@ -160,8 +161,8 @@ public class Debugger {
      */
     public void getFrozenCardsOnTable(final GameInfo game) {
         ArrayList<MinionCard> frozen = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < Constants.MAX_ROWS; i++) {
+            for (int j = 0; j < Constants.MAX_CARDS; j++) {
                 if (game.getGameTable().getFrozen()[i][j] == 1) {
                     frozen.add(game.getGameTable().getRows().get(i).get(j));
                 }

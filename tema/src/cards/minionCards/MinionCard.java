@@ -3,7 +3,7 @@ package cards.minionCards;
 import cards.Card;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 public class MinionCard extends Card {
     private int attackDamage;

@@ -1,4 +1,4 @@
-package main;
+package components;
 
 import cards.Card;
 import cards.heroCards.HeroCard;
@@ -24,14 +24,6 @@ public class Player {
     }
 
 
-    public Player(final Player player) {
-        this.deck = player.deck;
-        this.handCards = player.handCards;
-        this.handEnv = player.handEnv;
-        this.hero = player.hero;
-        this.mana = player.mana;
-        this.heroAttacked = player.heroAttacked;
-    }
 
     public final ArrayList<Card> getDeck() {
         return deck;

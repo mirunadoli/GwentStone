@@ -1,10 +1,11 @@
 package cards.envCards;
 
 import cards.Card;
+import components.Constants;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
-import main.Player;
+import components.GameInfo;
+import components.Player;
 
 public class EnvironmentCard extends Card {
     public EnvironmentCard() {
@@ -47,7 +48,8 @@ public class EnvironmentCard extends Card {
         }
 
         if (player == game.getPlayer1()) {
-            if (action.getAffectedRow() == 2 || action.getAffectedRow() == 3) {
+            if (action.getAffectedRow() == Constants.R2
+                    || action.getAffectedRow() == Constants.R3) {
                 game.getOutput().addObject().put("command", "useEnvironmentCard")
                         .put("handIdx", action.getHandIdx())
                         .put("affectedRow", action.getAffectedRow())
@@ -55,7 +57,8 @@ public class EnvironmentCard extends Card {
                 return -1;
             }
         } else if (player == game.getPlayer2()) {
-            if (action.getAffectedRow() == 0 || action.getAffectedRow() == 1) {
+            if (action.getAffectedRow() == Constants.R0
+                    || action.getAffectedRow() == Constants.R1) {
                 game.getOutput().addObject().put("command", "useEnvironmentCard")
                         .put("handIdx", action.getHandIdx())
                         .put("affectedRow", action.getAffectedRow())

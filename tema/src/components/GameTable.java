@@ -1,4 +1,4 @@
-package main;
+package components;
 
 import cards.minionCards.MinionCard;
 

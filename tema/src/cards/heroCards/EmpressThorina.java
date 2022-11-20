@@ -3,7 +3,7 @@ package cards.heroCards;
 import cards.minionCards.MinionCard;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 import java.util.ArrayList;
 

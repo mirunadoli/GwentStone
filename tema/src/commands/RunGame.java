@@ -1,8 +1,9 @@
-package main;
+package commands;
 
+import components.Constants;
 import fileio.ActionsInput;
-import main.commands.Debugger;
-import main.commands.TableCommands;
+import components.GameInfo;
+import components.Player;
 
 import java.util.ArrayList;
 
@@ -62,9 +63,13 @@ public class RunGame {
      * @param game
      */
     void executeRound(final GameInfo game) {
+
+
         if (game.getGameInput().getStartGame().getStartingPlayer() == 1) {
+
             game.setActivePlayer(game.getPlayer1());
             playerTurn(game);
+
             // se verifica daca jocul s-a terminat
             if (game.getGameEnd() == 1) {
                 return;
@@ -72,20 +77,18 @@ public class RunGame {
 
             game.setActivePlayer(game.getPlayer2());
             playerTurn(game);
-            // se verifica daca jocul s-a terminat
             if (game.getGameEnd() == 1) {
                 return;
             }
         } else {
+
             game.setActivePlayer(game.getPlayer2());
             playerTurn(game);
-            // se verifica daca jocul s-a terminat
             if (game.getGameEnd() == 1) {
                 return;
             }
             game.setActivePlayer(game.getPlayer1());
             playerTurn(game);
-            // se verifica daca jocul s-a terminat
             if (game.getGameEnd() == 1) {
                 return;
             }
@@ -115,7 +118,6 @@ public class RunGame {
             }
             player1.getDeck().remove(0);
         }
-
 
         // pt jucatorul 2
         player2.setMana(player2.getMana() + game.getRoundCount());
@@ -152,19 +154,19 @@ public class RunGame {
                 // dezgheata cartile playerului curent + rezolva hasAttacked
                 if (game.getActivePlayer() == game.getPlayer1()) {
                     game.getPlayer1().setHeroAttacked(0);
-                    for (int i = 0; i < 5; i++) {
-                        game.getGameTable().setFrozenElem(2, i, 0);
-                        game.getGameTable().setFrozenElem(3, i, 0);
-                        game.getGameTable().setHasAttackedElem(2, i, 0);
-                        game.getGameTable().setHasAttackedElem(3, i, 0);
+                    for (int i = 0; i < Constants.MAX_CARDS; i++) {
+                        game.getGameTable().setFrozenElem(Constants.R2, i, 0);
+                        game.getGameTable().setFrozenElem(Constants.R3, i, 0);
+                        game.getGameTable().setHasAttackedElem(Constants.R2, i, 0);
+                        game.getGameTable().setHasAttackedElem(Constants.R3, i, 0);
                     }
                 } else {
                     game.getPlayer2().setHeroAttacked(0);
-                    for (int i = 0; i < 5; i++) {
-                        game.getGameTable().setFrozenElem(0, i, 0);
-                        game.getGameTable().setFrozenElem(1, i, 0);
-                        game.getGameTable().setHasAttackedElem(0, i, 0);
-                        game.getGameTable().setHasAttackedElem(1, i, 0);
+                    for (int i = 0; i < Constants.MAX_CARDS; i++) {
+                        game.getGameTable().setFrozenElem(Constants.R0, i, 0);
+                        game.getGameTable().setFrozenElem(Constants.R1, i, 0);
+                        game.getGameTable().setHasAttackedElem(Constants.R0, i, 0);
+                        game.getGameTable().setHasAttackedElem(Constants.R1, i, 0);
                     }
                 }
 
@@ -181,7 +183,7 @@ public class RunGame {
      *
      * @param game
      */
-    void playGame(final GameInfo game) {
+    public void playGame(final GameInfo game) {
         game.setGameEnd(0);
         //roundCount = 1;
         game.setCurrentAction(0);

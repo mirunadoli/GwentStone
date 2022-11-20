@@ -1,4 +1,6 @@
-package main;
+package commands;
+
+import components.GameInfo;
 
 public class Statistics {
 

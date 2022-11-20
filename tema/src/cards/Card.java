@@ -2,7 +2,7 @@ package cards;
 
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 import java.util.ArrayList;
 

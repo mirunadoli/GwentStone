@@ -1,9 +1,10 @@
 package cards.heroCards;
 
 import cards.Card;
+import components.Constants;
 import fileio.ActionsInput;
 import fileio.CardInput;
-import main.GameInfo;
+import components.GameInfo;
 
 public class HeroCard extends Card {
     private int health;
@@ -13,7 +14,7 @@ public class HeroCard extends Card {
 
     public HeroCard(final CardInput card) {
         super(card);
-        this.health = 30;
+        this.health = Constants.START_HEALTH;
     }
 
     public HeroCard(final HeroCard card) {

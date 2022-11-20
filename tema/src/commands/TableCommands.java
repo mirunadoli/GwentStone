@@ -1,12 +1,12 @@
-package main.commands;
+package commands;
 
 import cards.Card;
 import cards.heroCards.HeroCard;
 import cards.minionCards.*;
 import fileio.ActionsInput;
-import main.Constants;
-import main.GameInfo;
-import main.Player;
+import components.Constants;
+import components.GameInfo;
+import components.Player;
 
 import java.util.ArrayList;
 
