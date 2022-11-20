@@ -125,12 +125,14 @@ public class Debugger {
         // verify if there is a card at the given position
         if (x > Constants.R3 || y >= game.getGameTable().getRows().get(x).size()) {
             game.getOutput().addObject().put("command", "getCardAtPosition")
+                    .put("x", x).put("y", y)
                     .put("output", "No card at that position.");
             return;
         }
 
         MinionCard card = new MinionCard(game.getGameTable().getRows().get(x).get(y));
         game.getOutput().addObject().put("command", "getCardAtPosition")
+                .put("x", x).put("y", y)
                 .putPOJO("output", card);
 
     }

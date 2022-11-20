@@ -9,6 +9,7 @@ import cards.envCards.Winterfell;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import components.GameInfo;
 import components.GameTable;
+import components.Statistics;
 import fileio.CardInput;
 import fileio.Input;
 import fileio.StartGameInput;
