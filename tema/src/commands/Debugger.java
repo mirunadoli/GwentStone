@@ -126,7 +126,7 @@ public class Debugger {
         if (x > Constants.R3 || y >= game.getGameTable().getRows().get(x).size()) {
             game.getOutput().addObject().put("command", "getCardAtPosition")
                     .put("x", x).put("y", y)
-                    .put("output", "No card at that position.");
+                    .put("output", "No card available at that position.");
             return;
         }
 
