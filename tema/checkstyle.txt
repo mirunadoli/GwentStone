@@ -1,2 +1,20 @@
 Starting audit...
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\cards\envCards\EnvironmentCard.java:50:76: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\cards\envCards\HeartHound.java:42:56: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\cards\envCards\HeartHound.java:51:30: '5' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\cards\heroCards\HeroCard.java:16:23: '30' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\commands\Debugger.java:124:17: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\commands\Debugger.java:163:29: '4' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\commands\Debugger.java:164:33: '5' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\commands\TableCommands.java:5:25: Using the '.*' form of import should be avoided - cards.minionCards.*. [AvoidStarImport]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\Constants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\Main.java:15:8: Unused import - java.lang.management.PlatformLoggingMXBean. [UnusedImports]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\RunGame.java:155:41: '5' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\RunGame.java:157:59: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\RunGame.java:159:64: '3' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\RunGame.java:163:41: '5' is a magic number. [MagicNumber]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\StartGameEngine.java:4:23: Using the '.*' form of import should be avoided - cards.heroCards.*. [AvoidStarImport]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\StartGameEngine.java:5:25: Using the '.*' form of import should be avoided - cards.minionCards.*. [AvoidStarImport]
+[ERROR] C:\Users\dolin\Desktop\tema POO\TEMA-1-POO\tema\.\src\main\StartGameEngine.java:13:17: Using the '.*' form of import should be avoided - java.util.*. [AvoidStarImport]
 Audit done.
+Checkstyle ends with 17 errors.

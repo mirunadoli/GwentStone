@@ -6,13 +6,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
+import fileio.CardInput;
 import fileio.Input;
+import fileio.StartGameInput;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.PlatformLoggingMXBean;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -68,8 +72,33 @@ public final class Main {
                 Input.class);
 
         ArrayNode output = objectMapper.createArrayNode();
-
         //TODO add here the entry point to your implementation
+
+
+        // prescurtari
+        ArrayList<ArrayList<CardInput>> decks1 = inputData.getPlayerOneDecks().getDecks();
+        ArrayList<ArrayList<CardInput>> decks2 = inputData.getPlayerTwoDecks().getDecks();
+        StartGameInput stInput;
+
+        //instante necesare pt joc
+        StartGameEngine startGame = new StartGameEngine();
+        RunGame runGame = new RunGame();
+        GameTable gameTable;
+        Statistics stats = new Statistics();
+        Player player1;
+        Player player2;
+
+        // pornirea jocurilor pe rand
+        for (int i = 0; i < inputData.getGames().size(); i++) {
+            stInput = inputData.getGames().get(i).getStartGame();
+            player1 = new Player();
+            player2 = new Player();
+            gameTable = new GameTable();
+            startGame.startNewGame(player1, decks1, player2, decks2, stInput);
+            GameInfo info = new GameInfo(player1, player2, gameTable, inputData.getGames().get(i),
+                    output, stats);
+            runGame.playGame(info);
+        }
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
